@@ -634,7 +634,7 @@ MLP的结构收敛速度不够快，考虑结合***instant-NGP***？
 
 本文使用层次化的场景表征 **hierarchical scene representation** ，从而使得SLAM系统能够囊括多层次的环境局部信息 **multi-level local information**。
 
-![image-20221014140026214](文献阅读.assets/image-20221014140026214.png)
+![image-20221014140026214](图片备份/image-20221014140026214.png)
 
 ##### pipeline
 
@@ -658,17 +658,17 @@ MLP的结构收敛速度不够快，考虑结合***instant-NGP***？
 
   * 首先，对于 mid-level 直接用预训练好的MLP解码出 occupancy
 
-    <img src="文献阅读.assets/image-20221020143224854.png" alt="image-20221020143224854" style="zoom:50%;" />
+    <img src="图片备份/image-20221020143224854.png" alt="image-20221020143224854" style="zoom:50%;" />
 
     上式中，$\bold p$是3D点的位置，$\phi_\theta^1(\bold p)$是在 feature grid 中采用**三线性插值**方式得到的 **feature vector**，这里可以参考 ConvONet
 
   * 然后，以**残差**的方式添加 fine-level features。具体做法是，fine-level MLP 输入为 **mid 和 fine feature 的拼接**，输出为一个 residual ：
 
-    <img src="文献阅读.assets/image-20221020143152510.png" alt="image-20221020143152510" style="zoom:50%;" />
+    <img src="图片备份/image-20221020143152510.png" alt="image-20221020143152510" style="zoom:50%;" />
 
   * 最终，一个点的occupancy：
 
-    <img src="文献阅读.assets/image-20221020143204865.png" alt="image-20221020143204865" style="zoom:50%;" />
+    <img src="图片备份/image-20221020143204865.png" alt="image-20221020143204865" style="zoom:50%;" />
 
   > 问题：mid-level 和 fine-level 的MLP学习到的函数形式不太一样，具体是怎么分别预训练的？
 
@@ -680,7 +680,7 @@ MLP的结构收敛速度不够快，考虑结合***instant-NGP***？
 
   与几何表征不同的是，这里**联合优化 解码器 **和颜色特征
 
-  <img src="文献阅读.assets/image-20221020144103717.png" alt="image-20221020144103717" style="zoom:50%;" />
+  <img src="图片备份/image-20221020144103717.png" alt="image-20221020144103717" style="zoom:50%;" />
 
 * ##### MLP预训练
 
@@ -714,7 +714,7 @@ MLP的结构收敛速度不够快，考虑结合***instant-NGP***？
 
 * 计算 coarse depth, fine depth, color, depth variances
 
-  <img src="文献阅读.assets/image-20221020133548635.png" alt="image-20221020133548635" style="zoom:50%;" />
+  <img src="图片备份/image-20221020133548635.png" alt="image-20221020133548635" style="zoom:50%;" />
 
 ##### Mapping
 
@@ -724,11 +724,11 @@ Mapping 阶段就是优化分层次的**场景表征**
 
 loss的形式：
 
-<img src="文献阅读.assets/image-20221020134602494.png" alt="image-20221020134602494" style="zoom:50%;" />
+<img src="图片备份/image-20221020134602494.png" alt="image-20221020134602494" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221020134614865.png" alt="image-20221020134614865" style="zoom:50%;" />
+<img src="图片备份/image-20221020134614865.png" alt="image-20221020134614865" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221020134630184.png" alt="image-20221020134630184" style="zoom:50%;" />
+<img src="图片备份/image-20221020134630184.png" alt="image-20221020134630184" style="zoom:50%;" />
 
 分阶段 **staged** 优化:
 
@@ -738,7 +738,7 @@ loss的形式：
 
 * 以BA的方式，联合优化所有level的特征网格和 **color decoder**（注意，color decoder 并不是预训练好的，也要参与优化）
 
-  <img src="文献阅读.assets/image-20221020135017210.png" alt="image-20221020135017210" style="zoom:50%;" />
+  <img src="图片备份/image-20221020135017210.png" alt="image-20221020135017210" style="zoom:50%;" />
 
 > 这种分阶段优化有什么好处？
 >
@@ -748,9 +748,9 @@ loss的形式：
 
 Tracking 阶段负责优化当前帧的**相机位姿**，其过程与 Mapping 并行，采用带方差的 **modified** geometric loss 结合光度误差：
 
-<img src="文献阅读.assets/image-20221020135119687.png" alt="image-20221020135119687" style="zoom:50%;" />
+<img src="图片备份/image-20221020135119687.png" alt="image-20221020135119687" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221020135132783.png" alt="image-20221020135132783" style="zoom:50%;" />
+<img src="图片备份/image-20221020135132783.png" alt="image-20221020135132783" style="zoom:50%;" />
 
 > tracking也就是定位问题，传统的SLAM做法是什么？
 >
@@ -769,7 +769,7 @@ Tracking 阶段负责优化当前帧的**相机位姿**，其过程与 Mapping �
 * 只选用与 current frame 有 visual overlap 的 keyframe 参与几何优化
 * 只优化当前视锥内的 grid feature
 
-<img src="文献阅读.assets/image-20221014172752239.png" alt="image-20221014172752239" style="zoom:35%;" />
+<img src="图片备份/image-20221014172752239.png" alt="image-20221014172752239" style="zoom:35%;" />
 
 > 这个做法的**好处**是：
 >
@@ -803,15 +803,15 @@ Tracking 阶段负责优化当前帧的**相机位姿**，其过程与 Mapping �
 
 positional encoding 的形式如下：
 
-<img src="文献阅读.assets/image-20221023200729370.png" alt="image-20221023200729370" style="zoom:50%;" />
+<img src="图片备份/image-20221023200729370.png" alt="image-20221023200729370" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221023200740286.png" alt="image-20221023200740286" style="zoom:50%;" />
+<img src="图片备份/image-20221023200740286.png" alt="image-20221023200740286" style="zoom:50%;" />
 
 同时优化场景表征和位姿的问题可表述为：
 
-<img src="文献阅读.assets/image-20221023202443592.png" alt="image-20221023202443592" style="zoom:50%;" />
+<img src="图片备份/image-20221023202443592.png" alt="image-20221023202443592" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221023202513332.png" alt="image-20221023202513332" style="zoom:50%;" />
+<img src="图片备份/image-20221023202513332.png" alt="image-20221023202513332" style="zoom:50%;" />
 
 对位姿 $\bold p$ 的优化使用梯度：
 $$
@@ -825,19 +825,19 @@ $$
 $$
 其中，第$k$个成分的雅可比为：
 
-<img src="文献阅读.assets/image-20221023202657209.png" alt="image-20221023202657209" style="zoom:50%;" />
+<img src="图片备份/image-20221023202657209.png" alt="image-20221023202657209" style="zoom:50%;" />
 
 可见，随着$k$变大，梯度呈指数增长，这会导致梯度更新$\Delta\bold p$极不稳定
 
 即，信号中的高频成分使得梯度不稳定，容易陷入 local minimum ，优化过程严重依赖初始值。如下图所示，光滑的信号有利于对 displacement 的预测。因此，论文的想法是用 **coarse-to-fine** 的做法，先在低频信号上做优化（相当于将图像/场景表征做 blur 处理），然后逐步扩大频率范围。
 
-<img src="文献阅读.assets/image-20221023200156172.png" alt="image-20221023200156172" style="zoom:40%;" />
+<img src="图片备份/image-20221023200156172.png" alt="image-20221023200156172" style="zoom:40%;" />
 
 具体做法是，对 positional encoding 做改进，采用**带权重的编码**：
 
-<img src="文献阅读.assets/image-20221023194426723.png" alt="image-20221023194426723" style="zoom:50%;" />
+<img src="图片备份/image-20221023194426723.png" alt="image-20221023194426723" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221023194447580.png" alt="image-20221023194447580" style="zoom:50%;" />
+<img src="图片备份/image-20221023194447580.png" alt="image-20221023194447580" style="zoom:50%;" />
 
 权重参数$w$由$\alpha$控制，$\alpha\in[0,L]$随着迭代过程不断递增， positional encoding 向量中$k>a$的部分（即高频成分）被置零，不贡献梯度。这样，可以看成是对 positional encoding 加上了一个截止频率不断增长的动态低通滤波器，在优化过程中先优化低频部分，再优化高频部分，即 coarse-to-fine 过程。
 
@@ -857,7 +857,7 @@ $$
 
 **要解决的问题**：3D重建，输入3D点云或者粗糙的3D voxel ，用Neural network恢复shape
 
-<img src="文献阅读.assets/image-20221016160656398.png" alt="image-20221016160656398" style="zoom:28%;" />
+<img src="图片备份/image-20221016160656398.png" alt="image-20221016160656398" style="zoom:28%;" />
 
 论文提到***对3D场景表征的要求***：
 
@@ -874,9 +874,9 @@ $$
 
 本文的 key idea 是，利用卷积操作（**CNN**）来得到 translation equivariance，同时利用 3D 结构的局部自相似性 *exploit the local self-similarity of 3D structures*
 
-<img src="文献阅读.assets/image-20221014150555485.png" alt="image-20221014150555485" style="zoom:50%;" />
+<img src="图片备份/image-20221014150555485.png" alt="image-20221014150555485" style="zoom:50%;" />
 
-<img src="文献阅读.assets/image-20221016163904790.png" alt="image-20221016163904790" style="zoom:25%;" />
+<img src="图片备份/image-20221016163904790.png" alt="image-20221016163904790" style="zoom:25%;" />
 
 **Pipeline**: 
 
@@ -914,7 +914,11 @@ Decoder:
 
 [Instant Neural Graphics Primitives with a Multiresolution Hash Encoding](https://nvlabs.github.io/instant-ngp/assets/mueller2022instant.pdf)
 
+[Github](https://github.com/NVlabs/instant-ngp)
+
 NeRF的训练加速
+
+用了 hash-based hierarchical volumetric representation 来表征场景，实现实时的神经辐射场训练。
 
 
 
@@ -956,65 +960,65 @@ Mip-NeRF通过使用一个cone（圆锥）而不是ray采样，同时改进 posi
 
 NeRF直接在射线上采样多个点，再进行 positional encoding ，随后作为MLP的输入。每个频率的信息以相同方式被直接编码（encodes all frequencies equally），从而导致生成图像中的高频成分会出现锯齿
 
-<img src="文献阅读.assets/image-20221101210115234.png" alt="image-20221101210115234" style="zoom:40%;" />
+<img src="图片备份/image-20221101210115234.png" alt="image-20221101210115234" style="zoom:40%;" />
 
 用2D图像来类比：
 
 如果直接降采样，效果很不好。相当于NeRF中直接采样点然后PE的过程
 
-<img src="文献阅读.assets/image-20221101205849510.png" alt="image-20221101205849510" style="zoom:40%;" />
+<img src="图片备份/image-20221101205849510.png" alt="image-20221101205849510" style="zoom:40%;" />
 
 经过高斯滤波平滑操作后再降采样，图像质量提高了（相当于是过滤了高频成分）。因此Mip-NeRF的想法可以看作是先对场景表征做高斯滤波再降采样。
 
-<img src="文献阅读.assets/image-20221101205912373.png" alt="image-20221101205912373" style="zoom:40%;" />
+<img src="图片备份/image-20221101205912373.png" alt="image-20221101205912373" style="zoom:40%;" />
 
 #### Method
 
-<img src="文献阅读.assets/image-20221101210335339.png" alt="image-20221101210335339" style="zoom:30%;" />
+<img src="图片备份/image-20221101210335339.png" alt="image-20221101210335339" style="zoom:30%;" />
 
 Mip-NeRF用**圆锥（cone）**取样**射线**来进行采样。可以看出，NeRF的采样方式仅仅能体现一个极小点的特征，即使是以不同方向来采样，对同一个点来说，其特征也不变，具有歧义性（**ambiguity**）；而Mip-NeRF的做法考虑到了特征的**形状和大小**，是对锥台（conical frustram）内一块体积的特征进行建模 ***models the volume of each sampled conical frustum***，从而去除了歧义性。
 
 NeRF由于其采样和编码方式，只能学习到特定scale的特征，所以需要使用 coarse 和 fine **两个**等级的MLP；而Mip-NeRF本身建模出的特征就**包含尺度**信息，所以***仅用一个MLP***，这使得模型大小减半。
 
-<img src="文献阅读.assets/image-20221101210511970.png" alt="image-20221101210511970" style="zoom:30%;" />
+<img src="图片备份/image-20221101210511970.png" alt="image-20221101210511970" style="zoom:30%;" />
 
 
 
-Mip-NeRF 使用 IPE/integrated positional encoding 来表征 conical frustum 中 volume 的特征
+Mip-NeRF 使用 ***IPE/integrated positional encoding*** 来表征 conical frustum 中 volume 的特征
 
 具体而言，是用锥台中所有点的 positional encoding 的期望来作为锥台 volume 内的特征表征。如果直接进行计算，就是如下形式：
 
-<img src="文献阅读.assets/image-20221101214820170.png" alt="image-20221101214820170" style="zoom:45%;" />
+<img src="图片备份/image-20221101214820170.png" alt="image-20221101214820170" style="zoom:45%;" />
 
-<img src="文献阅读.assets/image-20221101214839821.png" alt="image-20221101214839821" style="zoom:45%;" />
+<img src="图片备份/image-20221101214839821.png" alt="image-20221101214839821" style="zoom:45%;" />
 
-式中，分子不好计算。因此论文采用多元高斯分布来近似。由于圆锥台关于射线对称的形状，仅需要三个参数就可以表征这个高斯分布。即在射线上的距离均值$\mu_t$，射线方向上的方差$\sigma_t$，垂直于射线方向的方差$\sigma_r$
+式中，分子不好计算。因此论文采用**多元高斯分布**来近似。由于圆锥台关于射线对称的形状，仅需要**三个参数**就可以表征这个高斯分布。即在射线上的距离均值$\mu_t$，射线方向上的方差$\sigma_t$，垂直于射线方向的方差$\sigma_r$
 
-<img src="文献阅读.assets/image-20221101214937735.png" alt="image-20221101214937735" style="zoom:45%;" />
+<img src="图片备份/image-20221101214937735.png" alt="image-20221101214937735" style="zoom:45%;" />
 
 然后，进行相对坐标系到世界坐标系的坐标转换：
 
-<img src="文献阅读.assets/image-20221102003246890.png" alt="image-20221102003246890" style="zoom:80%;" />
+<img src="图片备份/image-20221102003246890.png" alt="image-20221102003246890" style="zoom:80%;" />
 
 进行重新参数化（reparameterization），再利用高斯分布的线性变换：
 
-<img src="文献阅读.assets/image-20221102004223965.png" alt="image-20221102004223965" style="zoom:80%;" />
+<img src="图片备份/image-20221102004223965.png" alt="image-20221102004223965" style="zoom:80%;" />
 
-<img src="文献阅读.assets/image-20221102004242436.png" alt="image-20221102004242436" style="zoom:80%;" />
+<img src="图片备份/image-20221102004242436.png" alt="image-20221102004242436" style="zoom:80%;" />
 
 由高斯分布经三角函数变换后的均值：
 
-<img src="文献阅读.assets/image-20221102005226160.png" alt="image-20221102005226160" style="zoom:80%;" />
+<img src="图片备份/image-20221102005226160.png" alt="image-20221102005226160" style="zoom:80%;" />
 
 根据线性性质，得到IPE：
 
-<img src="文献阅读.assets/image-20221101215204479.png" alt="image-20221101215204479" style="zoom:45%;" />
+<img src="图片备份/image-20221101215204479.png" alt="image-20221101215204479" style="zoom:45%;" />
 
 对于$\boldsymbol\Sigma_\gamma$，由于PE向量的各个维度相互独立，因此文中的做法是只算对角：
 
-<img src="文献阅读.assets/image-20221102005508004.png" alt="image-20221102005508004" style="zoom:80%;" />
+<img src="图片备份/image-20221102005508004.png" alt="image-20221102005508004" style="zoom:80%;" />
 
-<img src="文献阅读.assets/image-20221102005519075.png" alt="image-20221102005519075" style="zoom:80%;" />
+<img src="图片备份/image-20221102005519075.png" alt="image-20221102005519075" style="zoom:80%;" />
 
 这样，类比于2D图像中的**高斯滤波**，NeRF场景表征中的高频信息相当于是被平滑掉了，所以达到了 anti-aliasing 的效果。
 
@@ -1042,7 +1046,7 @@ Mip-NeRF 使用 IPE/integrated positional encoding 来表征 conical frustum 中
 
 这种做法使得场景表征**可以被扩展**（添加格外的Block-NeRF），并且可以通过仅改变一个或几个Block-NeRF而*不用重新训练整个场景*的方式来不断更新。
 
-<img src="文献阅读.assets/image-20221102193959994.png" alt="image-20221102193959994" style="zoom:50%;" />
+<img src="图片备份/image-20221102193959994.png" alt="image-20221102193959994" style="zoom:50%;" />
 
 NeRF网络结构上，借鉴了**Mip-NeRF**；相机位姿的优化借鉴了**BARF**的方法；另外使用了**NeRF in the wild**中的外观嵌入。
 
@@ -1076,7 +1080,7 @@ NeRF网络结构上，借鉴了**Mip-NeRF**；相机位姿的优化借鉴了**BA
 
   这个MLP网络$f_v$由预测density的$f_\sigma$**提供监督信息**，透射率在$f_\sigma$中的计算式为：
 
-  <img src="文献阅读.assets/image-20221102194338088.png" alt="image-20221102194338088" style="zoom:50%;" />
+  <img src="图片备份/image-20221102194338088.png" alt="image-20221102194338088" style="zoom:50%;" />
 
 ##### 多个Block-NeRF的合并 Merging Multiple Block-NeRFs
 
@@ -1103,7 +1107,7 @@ NeRF网络结构上，借鉴了**Mip-NeRF**；相机位姿的优化借鉴了**BA
 
 [Structure-Aware NeRF without Posed Camera via Epipolar Constraint](https://arxiv.org/pdf/2210.00183.pdf)
 
-
+TODO
 
 
 
@@ -1111,7 +1115,7 @@ NeRF网络结构上，借鉴了**Mip-NeRF**；相机位姿的优化借鉴了**BA
 
 [CLONeR: Camera-Lidar Fusion for Occupancy Grid-aided Neural Representations](https://arxiv.org/pdf/2209.01194.pdf)
 
-
+TODO
 
 
 
@@ -1137,13 +1141,21 @@ NeRF网络结构上，借鉴了**Mip-NeRF**；相机位姿的优化借鉴了**BA
 
 [NeRF in the wild](https://openaccess.thecvf.com/content/CVPR2021/papers/Martin-Brualla_NeRF_in_the_Wild_Neural_Radiance_Fields_for_Unconstrained_Photo_CVPR_2021_paper.pdf)
 
+NeRF**假设**了对于输入视角的一致性，即在不同图像的相同位置和视角下对应3D空间中的同一个点，其密度应该相同。这导致NeRF在受限（controlled）的环境下观察静态（static）物体效果较好。而对于最常见的复杂的、**不受限（uncontrolled）**、有着不同光照和动态物体遮挡的图像，传统NeRF难以处理。
 
+本文，NeRF-W针对上述问题作出一些改进，主要是如下两方面：
+
+（1）针对图像的颜色变化（**Photometric variation**），提出了***外观编码（appearance embedding）***来对图像中的隐式外观（latent appearance）建模
+
+（2）针对动态物体（**Transient objects**），首先，将场景进行**解耦**，分成***静态***部分和***动态***部分；然后，假设像素颜色呈正态分布，从而建模出其***不确定度***（瞬态物体）加入到损失函数中，忽略动态物体。
 
 
 
 ### 26.Dense Depth Priors for Neural Radiance Fields from Sparse Input Views
 
 [Dense Depth Priors for Neural Radiance Fields from Sparse Input Views](https://openaccess.thecvf.com/content/CVPR2022/papers/Roessle_Dense_Depth_Priors_for_Neural_Radiance_Fields_From_Sparse_Input_CVPR_2022_paper.pdf)
+
+TODO
 
 
 
@@ -1159,11 +1171,174 @@ GARF在BARF的基础上，提出了使用 Gaussian activations 的 ***positional
 
 [NeRF-SLAM: Real-Time Dense Monocular SLAM with Neural Radiance Fields](https://arxiv.org/pdf/2210.13641.pdf)
 
+[笔记详细](/Users/yibeibankaishui/Desktop/学习文件/notes/文献阅读/28-NeRF-SLAM.md)
+
+[NeRF-SLAM: Real-Time Dense Monocular SLAM with Neural Radiance Fields](https://arxiv.org/pdf/2210.13641.pdf)
+
+第一个结合**稠密单目SLAM**和**层次化体素神经辐射场**（hierarchical volumetric neural radiance fields）的3D场景重建算法，能**实时**地用图像序列实现准确的辐射场构建，并且*不需要*位姿或深度输入。
+
+**核心思想**是，使用一个**稠密单目SLAM** pipeline来估计相机**位姿**和**稠密深度图**以及它们的**不确定度**，用上述信息**作为监督信号**来训练NeRF场景表征
+
+#### 相关文献
+
+**Rosinol等人** 基于方差对深度估计值赋予权重，然后将它们融合到体素表征中，从而构建准确的场景表征（3D网格）。
+
+> Rosinol et al. [23] further show that dense monocular SLAM can reconstruct faithful 3D meshes of the scene by **weighting the depths** estimated in dense SLAM by their **marginal covariance**, and subsequently fusing them in a volumetric representation
+
+**本文**从上述工作中获得启发，用他们的方法来**计算深度和位姿不确定度**。但是将场景表征由 volumetric TSDF 换成了 ***hierarchical volumetric neural radiance field***
+
+**Instant-NGP** 用了 基于哈希的层次化体素表征 **hash-based hierarchical volumetric representation** 来表征场景，实现实时的神经辐射场训练。
+
+**Droid-SLAM** 使用了SOTA的稠密光流估计架构（a state-of-the-art dense optical flow estimation architecture ）作为视觉里程计，同时，使用了降采样后的深度图来规避维度问题。
+
+> Droid-SLAM avoids the **dimensionality problem** by using **downsampled depth maps** that are subsequently upsampled using a learned upsampling operator
+
+本文用Droid-SLAM**作为前端**（**tracking frontend**），使用了其预训练的权重
+
+#### Method
+
+本文算法包含**tracking**和**mapping**两个并行运行的线程，其中 **tracking** 作为前端，使用**稠密单目（dense monocular）SLAM**估计稠密深度图（dense depth maps）和相机位姿，同时会输出对深度和位姿的**不确定度**估计；**mapping** 后端使用前端的输出信息**作为监督**，训练一个辐射场（radiance field），其损失函数是颜色误差（**color loss**）和带权重的深度误差（**depth loss *weighted by the depths' marginal covariances***），权重值由先前的不确定度得到。
+
+<img src="https://raw.githubusercontent.com/Yibeibankaishui/Notebook-pics/master/image-20221104175620199.png" alt="image-20221104175620199" style="zoom:50%;" />
+
+##### Tracking : Dense SLAM with Covariance
+
+跟踪线程使用Driod-SLAM，由每个关键帧计算 dense depth maps 和位姿。
+
+* 首先，计算两帧之间的**稠密光流** $\bold p_{ij}$ 以及**权重**$\Sigma_{\bold p_{ij}}$。这里使用的是与Raft类似的架构，其核心是 Convolutional GRU
+
+* 然后利用光流（flow）和权重作为测量值，建立**BA问题**，其中用**逆深度图（inverse depth maps）**表示每个关键帧的3D几何，最终可以转化为**线性最小二乘问题**，需要求解线性方程组$Hx=b$，即
+  $$
+  \begin{bmatrix}C&E\\E^T&P\end{bmatrix}\begin{bmatrix}\Delta\boldsymbol\xi\\\Delta\bold d\end{bmatrix}=\begin{bmatrix}\bold v\\\bold w\end{bmatrix}
+  $$
+
+* 为了解决这个线性最小二乘问题，先用 **schur complement** 方法将Hessian矩阵降维成 **reduced camera matrix** 。
+
+  利用高斯消元法：
+  $$
+  \begin{aligned}\begin{bmatrix}I&-EP^{-1}\\0&I\end{bmatrix}\begin{bmatrix}C&E\\E^T&P\end{bmatrix}\begin{bmatrix}\Delta\boldsymbol\xi\\\Delta\bold d\end{bmatrix}=\begin{bmatrix}I&-EP^{-1}\\0&I\end{bmatrix}\begin{bmatrix}\bold v\\\bold w\end{bmatrix}\\
+  \begin{bmatrix}C-EP^{-1}E^T&0\\E^T&P\end{bmatrix}\begin{bmatrix}\Delta\boldsymbol\xi\\\Delta\bold d\end{bmatrix}=\begin{bmatrix}\bold v-EP^{-1}\bold w\\\bold w\end{bmatrix}
+  \end{aligned}
+  $$
+  这样，得到 **reduced camera matrix** $H_T=C-EP^{-1}E^T$
+
+* 然后采用 **cholesky 分解**，利用 front and back-substitution 求出位姿$T$，然后再求出深度$D$
+
+  先求解$H_T\Delta\boldsymbol\xi=\bold v-EP^{-1}\bold w$（使用**cholesky分解**），得到位姿更新量$\Delta\boldsymbol\xi=[C-EP^{-1}E^T]^{-1}(\bold v-EP^{-1}\bold w)$
+
+  进而求深度更新量$\Delta\bold d=P^{-1}(\bold w-E^T\Delta\boldsymbol\xi)$
+
+  > Cholesky分解求解线性方程组$AX=b$
+  >
+  > 1. 对$A$作cholesky分解（$A$需要时对称正定矩阵）
+  >    $$
+  >    A=LL^T
+  >    $$
+  >
+  > 2. 原线性方程转换为$LL^TX=b$，令$LY=b$，求$Y$
+  >    $$
+  >    Y=L^{-1}b
+  >    $$
+  >
+  > 3. $LL^TX=LY\longrightarrow L^TX=Y$，求$X$
+  >    $$
+  >    X=L^{-T}Y
+  >    $$
+
+* 利用上一步计算出来的深度和位姿再一次计算光流$\bold p_{ij}=\prod(\bold T_{ij}\prod^{-1}(\bold p_i,\bold d_i))$并作为GRU的初始估计值
+
+* 然后，计算稠密深度图和位姿的边缘协方差（**marginal covariances**）
+
+  $$
+  \begin{aligned}
+  \Sigma_{\bold d}&=P^{-1}+P^{-T}E^T\Sigma_{\bold T}EP^{-1}\\
+  \Sigma_{\bold T}&=(LL^T)^{-1}
+  \end{aligned}
+  $$
+
+  > *这里是怎么计算的？*
+  >
+  > <img src="https://raw.githubusercontent.com/Yibeibankaishui/Notebook-pics/master/image-20220725151708795.png" alt="image-20220725151708795" style="zoom:50%;" />
+  >
+  > 根据协方差矩阵、信息矩阵与**边际概率**（即本文中提到的marginal covariances）、条件概率的关系，$\bold d,\bold T$的边际概率分别为协方差矩阵的左上元素和右下元素。
+  >
+  > 而Hessian矩阵$H$就是信息矩阵，即协方差矩阵的逆，因此，首先要求协方差矩阵即为***对$H$求逆***
+  >
+  > 利用 **Schur complement** 对$H$进行分解以便于求逆：
+  > $$
+  > H=\begin{bmatrix}I&EP^{-1}\\0&I\end{bmatrix}\begin{bmatrix}C-EP^{-1}E^T&0\\0&P\end{bmatrix}\begin{bmatrix}I&0\\P^{-1}E^T&I\end{bmatrix}
+  > $$
+  > 求逆：
+  > $$
+  > \Sigma=H^{-1}=\begin{bmatrix}I&0\\-P^{-1}E^T&I\end{bmatrix}\begin{bmatrix}(C-EP^{-1}E^T)^{-1}&0\\0&P^{-1}\end{bmatrix}\begin{bmatrix}I&-EP^{-1}\\0&I\end{bmatrix}
+  > $$
+  > 求对角元素：
+  > $$
+  > \Sigma_{\bold T}=(C-EP^{-1}E^T)^{-1}=(LL^T)^{-1}\\
+  > \Sigma_{\bold d}=P^{-1}E^T(C-EP^{-1}E^T)^{-1}EP^{-1}+P^{-1}=P^{-1}+P^{-T}E^T\Sigma_{\bold T}EP^{-1}
+  > $$
+
+最后，将上面计算出来的信息（$\bold D,\bold T,\Sigma_{\bold d},\Sigma_{\bold T}$）作为监督来训练NeRF表征
+
+##### Mapping: Probabilistic Volumetric NeRF
+
+Mapping线程最小化建图损失函数$\mathcal{L}_M(\bold T,\Theta)$：
+$$
+\mathcal{L}_M(\bold T,\Theta)=\mathcal{L}_{rgb}(\bold T,\Theta)+\lambda_D\mathcal{L}_D(\bold T,\Theta)
+$$
+**颜色损失函数**为光度误差：
+$$
+\mathcal{L}_{rgb}(\bold T,\Theta)=\Vert I-I^\star(\bold T,\Theta)\Vert^2
+$$
+其中图像中每个点的像素值的计算方法与原始NeRF论文一致：
+$$
+C=\sum_i\mathcal{T}_i(1-\exp(-\sigma_i\delta_i))\bold c_i
+$$
+透射率（transmittance）定义与NeRF一致：
+$$
+\mathcal{T}_i=\exp(-\sum_{j<i}\sigma_j\delta_j)
+$$
+**几何损失函数**考虑到了深度的**不确定度**（即深度的marginal covariances）$\Sigma_{\bold D}$
+$$
+\mathcal{L}_D(\bold T,\Theta)=\Vert D-D^\star(\bold T,\Theta)\Vert^2_{\Sigma_{\bold D}}
+$$
+每一点的深度值由如下方式计算：
+$$
+d^\star=\sum_i\mathcal{T}_i(1-\exp(-\sigma_i\delta_i))d_i
+$$
+此外，MLP输入的形式参考了**Instant-NGP**（用于网络加速）
+
+##### Architecture
+
+###### Tracking 和 Mapping 线程间的交互
+
+仅当有**新关键帧**生成时，Tracking线程将**新关键帧的位姿、RGB图、深度图以及深度的边缘协方差**传递给Mapping线程
+
+只有在Tracking线程滑动窗口内的信息会被传给Mapping
+
+###### 关键帧的选取原则
+
+**滑动窗口**法中最多包含8个关键帧
+
+当**当前帧与先前关键帧之间的平均光流**大于一定阈值时，会生成新的关键帧
+
+##### Limitation
+
+内存占用很大
+
 
 
 ### 29. Orbeez-SLAM
 
 [Orbeez-SLAM: A Real-time Monocular Visual SLAM with ORB Features and NeRF-realized Mapping](https://arxiv.org/pdf/2209.13274.pdf)
+
+本文结合**ORB-SLAM**的视觉里程计和NeRF场景表征（使用了 instant-NGP 中的 multi-resolution hash encoding 和 CUDA 框架以加速），实现了**单目**稠密SLAM。
+
+其代码参考了ORB-SLAM2和Instant-NGP
+
+其框架如下图
+
+<img src="https://raw.githubusercontent.com/Yibeibankaishui/Notebook-pics/master/image-20221107163441508.png" alt="image-20221107163441508" style="zoom:50%;" />
 
 
 
@@ -1171,27 +1346,88 @@ GARF在BARF的基础上，提出了使用 Gaussian activations 的 ***positional
 
 [iDF-SLAM: End-to-End RGB-D SLAM with Neural Implicit Mapping and Deep Feature Tracking](https://arxiv.org/pdf/2209.07919.pdf)
 
+本文提出了一个自监督的端到端的 **RGB-D** SLAM系统。用基于特征的深度神经网络tracker作为前端，用NeRF建图模块作为后端。
+
+<img src="https://raw.githubusercontent.com/Yibeibankaishui/Notebook-pics/master/image-20221107172822898.png" alt="image-20221107172822898" style="zoom:50%;" />
+
+<img src="https://raw.githubusercontent.com/Yibeibankaishui/Notebook-pics/master/image-20221107172835993.png" alt="image-20221107172835993" style="zoom:50%;" />
+
+* 对于前端的 neural tracker，使用改进的无监督**URR模型**（[UnsupervisedR&R: Unsupervised Point Cloud Registration via Differentiable Rendering](https://openaccess.thecvf.com/content/CVPR2021/html/Banani_UnsupervisedRR_Unsupervised_Point_Cloud_Registration_via_Differentiable_Rendering_CVPR_2021_paper.html)），这个模型是经过预训练的，但是**可以在系统运行过程中被微调（finetune）**，从而保证了SLAM系统的**终身学习能力（lifelong learning ability）**
+* 对于后端的 neural implicit mapper ，使用和iMAP类似的单个MLP。但与之不同的是，用MLP**直接拟合截断距离场函数（truncated signed distance function / TSDF）**而不是 volume density
+
 
 
 ### 31. NeDDF
 
 [NEURAL DENSITY-DISTANCE FIELDS](https://arxiv.org/pdf/2207.14455.pdf)
 
+TODO
 
 
-### 32. SDF-based RGB-D Camera Tracking in Neural Scene Representations
+
+### ~~32. SDF-based RGB-D Camera Tracking in Neural Scene Representations~~
 
 [SDF-based RGB-D Camera Tracking in Neural Scene Representations](https://arxiv.org/pdf/2205.02079.pdf)
+
+这篇论文价值不大
+
+
+
+### 33. Driod-SLAM
+
+[DROID-SLAM: Deep Visual SLAM for Monocular, Stereo, and RGB-D Cameras](https://arxiv.org/pdf/2108.10869.pdf)
+
+[github](https://github.com/princeton-vl/DROID-SLAM)
+
+本文提出了一个**端到端**的、**结合传统方法**和深度网络的可微分SLAM架构 **Differentiable Recurrent Optimization-Inspired Design (DROID)**
+
+本文算法在RAFT的基础上做改进，包含了循环迭代更新 recurrent iterative updates。与RAFT相比有两点不同：
+
+（1）RAFT迭代地更新光流，而本文迭代更新**相机位姿和深度**；RAFT用两帧做计算，而本文可以使用**任意数量的帧**。这样的做法使得算法可以联合更新所有的相机位姿和深度图，从而有利于回环检测以及减少长轨迹的drift
+
+（2）使用 **Dense Bundle Adjustment (DBA) layer** 来更新相机位姿和深度图，DBA layer 计算相机位姿和 **dense per-pixel** depth 的高斯牛顿（Gauss-Newton）更新，使之与当前的光流估计相匹配。
+
+
+
+### 34. Probabilistic Volumetric Fusion for Dense Monocular SLAM
+
+[Probabilistic Volumetric Fusion for Dense Monocular SLAM](https://arxiv.org/pdf/2210.01276.pdf)
+
+
+
+### 35. RAFT: Recurrent All-Pairs Field Transforms for Optical Flow
+
+[RAFT: Recurrent All-Pairs Field Transforms for Optical Flow](https://arxiv.org/pdf/2003.12039.pdf)
+
+RAFT使用一个深度神经网络架构实现两帧图像之间的光流估计。具体结构上：
+
+（1）使用一个 **feature encoder** 从两个输入图像提取像素级别的特征，一个 **context encoder** 只提取 frame1 的特征
+
+（2）一个关联层 **correlation layer** 通过对所有特征向量对做内积，来构建一个4D（$W\times H\times W\times H$）的关联体积（correlation volume），4D volume 的后2个维度之后被做池化处理（pooling）从而构建 **multi-scale volumes**
+
+（3）一个基于**卷积**GRU的循环更新算子（**recurrent GRU-based update operator**）从关联体积中获取值从而不断更新光流场（flow field）
+
+<img src="../../../Library/Application Support/typora-user-images/image-20221106173330770.png" alt="image-20221106173330770" style="zoom:50%;" />
+
+
+
+### 36. nerf2nerf: Pairwise Registration of Neural Radiance Fields
+
+[nerf2nerf: Pairwise Registration of Neural Radiance Fields](https://arxiv.org/pdf/2211.01600v1.pdf)
+
+提出了应用于NeRF场景表征的**3D配准**的方法，即将传统的ICP拓展到NeRF。针对这一问题，提出了一种名为**表面场 surface field** 的几何表征，这个表征可以从预训练好的NeRF中提取得到，在表面场的基础上进行优化得到两个场景间的相对位姿。
 
 
 
 ### TODO
 
-<img src="文献阅读.assets/image-20221024150646657.png" alt="image-20221024150646657" style="zoom:40%;" />
+<img src="图片备份/image-20221024150646657.png" alt="image-20221024150646657" style="zoom:40%;" />
 
 * GARF
+
 * Nerfies
-* Stru
+
+  
 
 ---
 
@@ -1207,7 +1443,7 @@ GARF在BARF的基础上，提出了使用 Gaussian activations 的 ***positional
 
 设计目标函数、优化的难点
 
-<img src="文献阅读.assets/image-20221023155746837.png" alt="image-20221023155746837" style="zoom:50%;" />
+<img src="图片备份/image-20221023155746837.png" alt="image-20221023155746837" style="zoom:50%;" />
 
 more expressive objective functions + stronger priors : more difficult optimization problems
 
@@ -1220,4 +1456,3 @@ more expressive objective functions + stronger priors : more difficult optimizat
 
 存在的问题：训练困难；难以在不同数据集中泛化
 
-### 
